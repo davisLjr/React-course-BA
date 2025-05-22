@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMedia } from 'use-media';
 import Skeleton from '../../Skeleton/Skeleton';
-import './productDetailSkeleton.scss';
+import './ProductDetailSkeleton.scss'
 
 const ProductDetailSkeleton: React.FC = () => {
   const isMobile = useMedia({ maxWidth: '1017px' });
