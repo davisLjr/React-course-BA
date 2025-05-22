@@ -1,0 +1,21 @@
+.address-title {
+  margin-bottom: -4rem;
+  font-size: 2rem;
+}
+
+.location-container-custom {
+  max-width: 1920px;
+  margin: auto;
+}
+
+.card-container-address {
+  display: grid;
+  gap: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+@media (max-width: 1017px) {
+  .address-title {
+    font-size: 1.5rem;
+  }
+}

@@ -1,0 +1,19 @@
+.product-container-custom {
+  max-width: 1920px;
+  margin: auto;
+}
+
+.product-list-container {
+  padding: 2rem 3.75rem;
+
+  .title-products-area {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 1017px) {
+
+  .product-list-container {
+    padding: 2rem 1.875rem;
+  }
+}

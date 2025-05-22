@@ -1,0 +1,113 @@
+$font-primary: 'Inter', sans-serif;
+$font-secondary: "Libre Franklin", sans-serif;
+
+html {
+  font-family: $font-primary;
+  font-size: 100%;
+  line-height: 1.5;
+  font-weight: 400;
+
+  scrollbar-width: thin;
+  scrollbar-color: currentColor transparent;
+}
+
+html.light {
+  background-color: #ffffff;
+  color: #212529;
+
+  a {
+    color: #212529;
+  }
+}
+
+html.dark {
+  background-color: #212529;
+  color: #f8f9fa;
+
+  a {
+    color: #f8f9fa;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: currentColor;
+  border-radius: 2px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  a {
+    text-decoration: none;
+    width: fit-content;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    list-style: none;
+  }
+}
+
+body,
+body * {
+  box-sizing: border-box;
+  font-weight: inherit;
+  position: relative;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+span,
+li,
+ul,
+ol,
+button,
+input,
+textarea {
+  font-weight: 400;
+}
+
+.text-container {
+  padding: 3.75rem 3.75rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7.5rem;
+}
+
+@media (max-width: 1017px) {
+  .text-container {
+    padding: 2.5rem 1.875rem 0;
+  }
+}
+
+.toast__title {
+  padding-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.toast__subtitle {
+  font-size: 0.8rem;
+  font-weight: 300;
+  padding-bottom: 0.5rem;
+}

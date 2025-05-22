@@ -1,0 +1,130 @@
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 0;
+  gap: 0.313rem;
+
+  &__badge {
+    position: absolute;
+    top: 0.05rem;
+    right: 0.05rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.1rem;
+    height: 1.1rem;
+    font-size: 0.55rem;
+    border-radius: 9999px;
+    background-color: #e53e3e; /* color por defecto (rojo) */
+    color: #ffffff;
+    border: 1px solid;
+  }
+
+  /* Si quieres que el badge también cambie con el theme: */
+  &.btn--light .btn__badge {
+    background-color: #000000;
+    color: #ffffff;
+    border-color: #ffffff;
+  }
+  &.btn--dark .btn__badge {
+    background-color: #ffffff;
+    color: #000000;
+    border-color: #000000;
+  }
+
+  &.btn--primary {
+    &.btn--light {
+      background-color: #ffffff;
+      color: #000000;
+      &.btn--outline {
+        border-color: #000000;
+        border: 1px solid;
+        color: #000000;
+        background-color: transparent;
+      }
+    }
+    &.btn--dark {
+      background-color: #000000;
+      color: #ffff;
+      &.btn--outline {
+        border-color: #ffffff;
+        border: 1px solid;
+        color: #ffff;
+        background-color: transparent;
+      }
+    }
+  }
+
+  &.btn--secondary {
+
+    &.btn--light {
+      background-color: #000000;
+      color: #ffffff;
+      &.btn--outline {
+        border-color: #000000;
+        color: #000000;
+        background-color: transparent;
+        border: 1px solid;
+      }
+    }
+    &.btn--dark {
+      background-color: #ffffff;
+      color: #000000;
+      &.btn--outline {
+        border-color: #ffffff;
+        background-color: transparent;
+        color: #ffffff;
+        border: 1px solid;
+      }
+    }
+  }
+
+  &.btn--base {
+
+
+    &.btn--light {
+      background-color: transparent;
+      color: #000000;
+      &.btn--outline {
+        border-color: #000000;
+        border: 1px solid;
+      }
+    }
+    &.btn--dark {
+      background-color: transparent;
+      color: #ffffff;
+      &.btn--outline {
+        border-color: #ffffff;
+        border: 1px solid;
+      }
+    }
+  }
+
+  &.btn--full {
+    width: 100%;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+/* sizes */
+.btn--small {
+  padding: 0.25rem 0.31rem;
+  font-size: 0.813rem;
+}
+.btn--medium {
+  padding: 0.37rem 0.5rem;
+  font-size: 0.875rem;
+}
+.btn--large {
+  padding: 0.43rem 1.313rem;
+  font-size: 0.938rem;
+}

@@ -1,0 +1,29 @@
+.navbar {
+  width: 100%;
+  background-color: transparent;
+  transition: background-color 0.3s;
+  height: 3.375rem;
+  display: flex;
+  gap: 2.5rem;
+  padding: 0 3.25rem;
+  align-items: center;
+  justify-content: space-between;
+
+  &.navbar--light.navbar--scrolled {
+    background-color: #ffffff;
+    button, a {
+      color: #000000 !important;
+    }
+  }
+
+  &.navbar--dark.navbar--scrolled {
+    background-color: #212529;
+    button, a {
+      color: #ffffff !important;
+    }
+  }
+
+  &.navbar--mobile {
+    padding: 0 1.25rem;
+  }
+}

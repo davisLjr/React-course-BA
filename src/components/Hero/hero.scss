@@ -1,0 +1,66 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+
+  &__video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+
+  &__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  &__texts {
+    text-align: center;
+    color: #fff;
+  }
+
+  &__title-primary {
+    font-size: 2.5rem;
+    margin: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  }
+
+  &__title-secondary {
+    font-size: 1.5rem;
+    margin: 0.5rem 0 1.5rem;
+    letter-spacing: 0.563rem;
+  }
+
+  &__action {
+    margin-top: 1rem;
+    position: absolute;
+    bottom: 52px;
+    right: 52px;
+
+    button, a {
+      padding: 30px 48px;
+    }
+
+    &--mobile {
+      bottom: 20px;
+      right: 20px;
+
+      button {
+        padding: 20px 40px;
+      }
+    }
+  }
+
+}

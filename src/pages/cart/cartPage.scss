@@ -1,0 +1,111 @@
+/* src/pages/cartPage.scss */
+
+.cart-page {
+  padding: 2rem;
+  min-height: 80vh;
+  max-width: 800px;
+  margin: 0 auto;
+
+  &__title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  &__empty {
+    text-align: center;
+    font-size: 2rem;
+  }
+
+  &__total {
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-align: right;
+    margin: 1rem 0;
+  }
+
+  &__checkout {
+    margin-top: 1rem;
+  }
+
+  /* Tema light/dark (puedes ajustar colores si hace falta) */
+  &--light {
+    background: #fff;
+  }
+  &--dark {
+    background: #212529;
+  }
+}
+
+.cart-list {
+  list-style: none;
+  margin: 1rem 0;
+  display: flex;
+  padding: 0 2rem 0;
+  flex-direction: column;
+  height: 70dvh;
+  overflow: scroll;
+  gap: 1rem;
+  align-items: center;  /* centra los items en ancho reducido */
+
+  &__item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__image {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+  }
+
+  &__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__name {
+    font-weight: 500;
+  }
+
+  &__price {
+    font-size: 0.95rem;
+  }
+
+  &__remove {
+    margin-left: auto;
+  }
+}
+
+/* Responsive: en pantallas < 600px, lista centrada y ancho ajustado */
+@media (max-width: 37.5rem) {
+  .cart-page {
+    padding: 1.5rem;
+  }
+
+  .cart-list {
+    &__item {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &__remove {
+      margin-top: 0.5rem;
+      margin-left: 0;
+    }
+
+    &__image {
+      width: 100%;
+      height: 140px;
+      object-fit: contain;
+      background-color: #fff;
+    }
+  }
+
+  .cart-page__total {
+    text-align: center;
+  }
+}

@@ -1,0 +1,12 @@
+.product-skeleton {
+  display: flex;
+  flex-direction: column;
+
+  &__body {
+    margin: 1rem 0 2rem;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
