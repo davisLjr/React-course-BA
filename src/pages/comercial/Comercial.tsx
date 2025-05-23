@@ -2,6 +2,7 @@ import React from "react";
 import { useTheme } from "../../context/ThemeContext";
 import { Banner } from "../../components/Banner/Banner";
 import { Text } from "../../components/Text/Text";
+import coommercialImg from "/sections/tinified/commercial.webp"
 
 
 const ComercialPage: React.FC = () => {
@@ -11,7 +12,7 @@ const ComercialPage: React.FC = () => {
     <div style={{ marginBottom: '4rem' }}>
       <Banner
         title="Comercial"
-        imgSrc="/sections/tinified/commercial.webp"
+        imgSrc={coommercialImg}
         imgAlt="imagen referente a sección de ubicaciones"
       />
 

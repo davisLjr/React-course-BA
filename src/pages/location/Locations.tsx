@@ -4,6 +4,7 @@ import {Text} from "../../components/Text/Text";
 import {Banner} from "../../components/Banner/Banner";
 import AddressCard from "../../components/AddressCard/AddressCard";
 import "./locations.scss";
+import locationImg from "/sections/tinified/location.webp";
 
 const LocationsPage: React.FC = () => {
   const {theme} = useTheme();
@@ -70,7 +71,7 @@ const LocationsPage: React.FC = () => {
     <div style={{ marginBottom: '4rem' }}>
       <Banner
         title="Locations"
-        imgSrc="/sections/tinified/location.webp"
+        imgSrc={locationImg}
         imgAlt="imagen referente a seccion productos"
       />
       <div className="location-container-custom">

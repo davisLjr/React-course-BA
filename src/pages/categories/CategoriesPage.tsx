@@ -6,6 +6,7 @@ import {Banner} from "../../components/Banner/Banner";
 import CardCategories from "../../components/CardCategories/CardCategories";
 import "./categoriesPage.scss";
 import CardCategoriesSkeleton from "../../components/CardCategories/skeleton/CardCategoriesSkeleton";
+import categoriesImg from "/sections/tinified/categories.webp";
 
 const categoryImages: Record<string, string> = {
   electronics:
@@ -26,7 +27,7 @@ const CategoriesPage: React.FC = () => {
     <>
       <Banner
         title="Categorías"
-        imgSrc="/sections/tinified/categories.webp"
+        imgSrc={categoriesImg}
         imgAlt="imagen referente a seccion productos"
       />
 

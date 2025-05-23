@@ -4,6 +4,7 @@ import {Banner} from "../../components/Banner/Banner";
 import {Text} from "../../components/Text/Text";
 import {useTheme} from "../../context/ThemeContext";
 import "./productPage.scss";
+import productImg from "/sections/tinified/product.webp";
 
 const ProductsPage: React.FC = () => {
   const {theme} = useTheme();
@@ -11,7 +12,7 @@ const ProductsPage: React.FC = () => {
     <div style={{ marginBottom: '4rem' }}>
       <Banner
         title="Productos"
-        imgSrc="/sections/tinified/product.webp"
+        imgSrc={productImg}
         imgAlt="imagen referente a seccion productos"
       />
 
