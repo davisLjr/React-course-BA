@@ -9,12 +9,12 @@ import CardCategoriesSkeleton from "../../components/CardCategories/skeleton/Car
 
 const categoryImages: Record<string, string> = {
   electronics:
-    "https://images.pexels.com/photos/792345/pexels-photo-792345.jpeg",
-  jewelery: "https://images.pexels.com/photos/266621/pexels-photo-266621.jpeg",
+    "/categories/elect.webp",
+  jewelery: "/categories/jewel.webp",
   "men's clothing":
-    "https://images.pexels.com/photos/18185491/pexels-photo-18185491.jpeg",
+    "/categories/men.webp",
   "women's clothing":
-    "https://images.pexels.com/photos/4869697/pexels-photo-4869697.jpeg",
+    "/categories/women.webp",
 };
 
 const CategoriesPage: React.FC = () => {
@@ -26,7 +26,7 @@ const CategoriesPage: React.FC = () => {
     <>
       <Banner
         title="Categorías"
-        imgSrc="https://images.pexels.com/photos/3965545/pexels-photo-3965545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+        imgSrc="/sections/tinified/categories.webp"
         imgAlt="imagen referente a seccion productos"
       />
 

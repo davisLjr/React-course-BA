@@ -21,7 +21,7 @@ const BannerImage: React.FC<BannerImagePropsTypes> = ({
           <p className="banner-image__description">{description}</p>
         </div>
         <div className="banner-image__media">
-          <img src={src} alt={alt} className="banner-image__img" loading="lazy" width={800} height={500} />
+          <img src={src} alt={alt} className="banner-image__img" loading="eager" width={800} height={500} />
         </div>
       </section>
 

@@ -8,6 +8,10 @@ import {ArrowLeft, ArrowRight} from "lucide-react";
 import "./home.scss";
 import BannerImage from "../../components/BannerImage/BannerImage";
 import {AnimatePresence, motion} from "framer-motion";
+import banner1 from "/banner/banner-1.webp";
+import banner2 from "/banner/banner-2.webp";
+import banner3 from "/banner/banner-3.webp";
+import banner4 from "/banner/banner-4.webp";
 
 const Home: React.FC = () => {
   const imageSourcesSlider = [
@@ -136,14 +140,14 @@ const Home: React.FC = () => {
         <BannerImage
           title="Joyerias"
           description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. "
-          src="https://images.pexels.com/photos/3641059/pexels-photo-3641059.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          src={banner1}
           alt="Seating system Moto"
         />
 
         <BannerImage
           title="Colección Mujer"
           description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. "
-          src="https://images.pexels.com/photos/7202789/pexels-photo-7202789.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          src={banner2}
           alt="Garden Lounge outdoor"
           inverted
         />
@@ -151,14 +155,14 @@ const Home: React.FC = () => {
         <BannerImage
           title="Colección Hombre"
           description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. "
-          src="https://images.pexels.com/photos/175697/pexels-photo-175697.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          src={banner3}
           alt="Seating system Moto"
         />
 
         <BannerImage
           title="Coleccion Informatica"
           description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. "
-          src="https://images.pexels.com/photos/4581902/pexels-photo-4581902.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          src={banner4}
           alt="Garden Lounge outdoor"
           inverted
         />
@@ -198,7 +202,11 @@ const Home: React.FC = () => {
       />
 
       <div className="custom-container">
-        <Text as="h2" style={{fontWeight: 300, marginBottom: "-8rem"}}>
+        <Text
+          as="h2"
+          style={{fontWeight: 300, marginBottom: "-8rem"}}
+          theme={theme}
+        >
           Colecciones Pasadas
         </Text>
 

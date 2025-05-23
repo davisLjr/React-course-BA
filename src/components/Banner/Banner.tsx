@@ -24,7 +24,7 @@ export const Banner: React.FC<BannerPropTypes> = ({ imgSrc, title, imgAlt, class
 
   return (
     <div className={classes}>
-      <img src={imgSrc} alt={imgAlt} className='img-bg' width={100} height={540} loading="lazy" />
+      <img src={imgSrc} alt={imgAlt} className='img-bg' width={100} height={540} loading="eager" />
       <Text as='h1' className={titleClass} themeInverted={invertedtheme}>{title}</Text>
     </div>
   )

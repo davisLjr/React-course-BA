@@ -20,10 +20,10 @@ export const Header = () => {
   const drawerContent = (
     <nav>
       <ul>
-        <li><Button isLink to="/products" color="base" theme={theme}>Products</Button></li>
-        <li><Button isLink to="/categories" color="base" theme={theme}>Categories</Button></li>
-        <li><Button isLink to="/locations" color="base" theme={theme}>Locations</Button></li>
-        <li><Button isLink to="/commercial" color="base" theme={theme}>Commercial</Button></li>
+        <li><Button isLink to="/products" color="base" theme={theme} onClick={closeDrawer}>Products</Button></li>
+        <li><Button isLink to="/categories" color="base" theme={theme} onClick={closeDrawer}>Categories</Button></li>
+        <li><Button isLink to="/locations" color="base" theme={theme} onClick={closeDrawer}>Locations</Button></li>
+        <li><Button isLink to="/commercial" color="base" theme={theme} onClick={closeDrawer}>Commercial</Button></li>
       </ul>
     </nav>
   );
