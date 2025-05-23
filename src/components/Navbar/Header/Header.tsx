@@ -35,7 +35,7 @@ export const Header = () => {
         <MobileNavbar
           theme={theme}
           leftContent={
-            <Button icon={ <AlignVerticalJustifyEnd size={20} /> } theme={theme} iconPosition='left' color='base' style={{ padding: '0' }} >
+            <Button isLink to='/' icon={ <AlignVerticalJustifyEnd size={20} /> } theme={theme} iconPosition='left' color='base' style={{ padding: '0' }} >
               ECX
             </Button>
           }
