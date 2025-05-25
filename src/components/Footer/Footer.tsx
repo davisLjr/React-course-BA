@@ -14,8 +14,8 @@ const Footer: React.FC = () => {
   const footerStyle: React.CSSProperties = {
     width: "100%",
     padding: `40px ${horizontalPadding}`,
-    borderTop: `1px solid ${theme === "light" ? "#e5e5e5" : "#333"}`,
-    backgroundColor: theme === "light" ? "#fff" : "#212529",
+    borderTop: `1px solid ${theme === "light" ? "#bababa" : "#7b7b7b"}`,
+    backgroundColor: theme === "light" ? "#f0ebe3" : "#212529",
     display: "flex",
     flexDirection: "column",
     gap: "30px",
@@ -41,7 +41,7 @@ const Footer: React.FC = () => {
     justifyContent: "space-between",
     alignItems: "center",
     paddingTop: "20px",
-    borderTop: `1px solid ${theme === "light" ? "#e5e5e5" : "#333"}`,
+    borderTop: `1px solid ${theme === "light" ? "#bababa" : "#7b7b7b"}`,
   };
 
   return (

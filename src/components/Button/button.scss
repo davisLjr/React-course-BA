@@ -21,25 +21,25 @@
     font-size: 0.55rem;
     border-radius: 9999px;
     background-color: #e53e3e; /* color por defecto (rojo) */
-    color: #ffffff;
+    color: #f0ebe3;
     border: 1px solid;
   }
 
   /* Si quieres que el badge también cambie con el theme: */
   &.btn--light .btn__badge {
     background-color: #000000;
-    color: #ffffff;
-    border-color: #ffffff;
+    color: #f0ebe3;
+    border-color: #f0ebe3;
   }
   &.btn--dark .btn__badge {
-    background-color: #ffffff;
+    background-color: #f0ebe3;
     color: #000000;
     border-color: #000000;
   }
 
   &.btn--primary {
     &.btn--light {
-      background-color: #ffffff;
+      background-color: #f0ebe3;
       color: #000000;
       &.btn--outline {
         border-color: #000000;
@@ -50,11 +50,11 @@
     }
     &.btn--dark {
       background-color: #000000;
-      color: #ffff;
+      color: #f0ebe3;
       &.btn--outline {
-        border-color: #ffffff;
+        border-color: #f0ebe3;
         border: 1px solid;
-        color: #ffff;
+        color: #f0ebe3;
         background-color: transparent;
       }
     }
@@ -64,7 +64,7 @@
 
     &.btn--light {
       background-color: #000000;
-      color: #ffffff;
+      color: #f0ebe3;
       &.btn--outline {
         border-color: #000000;
         color: #000000;
@@ -73,12 +73,12 @@
       }
     }
     &.btn--dark {
-      background-color: #ffffff;
+      background-color: #f0ebe3;
       color: #000000;
       &.btn--outline {
-        border-color: #ffffff;
+        border-color: #f0ebe3;
         background-color: transparent;
-        color: #ffffff;
+        color: #f0ebe3;
         border: 1px solid;
       }
     }
@@ -97,9 +97,9 @@
     }
     &.btn--dark {
       background-color: transparent;
-      color: #ffffff;
+      color: #f0ebe3;
       &.btn--outline {
-        border-color: #ffffff;
+        border-color: #f0ebe3;
         border: 1px solid;
       }
     }

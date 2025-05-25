@@ -259,7 +259,7 @@ const Home: React.FC = () => {
                   minWidth: "380px",
                   display: "flex",
                   flexDirection: "column",
-                  border: `5px solid ${theme === "light" ? "#fff" : "#212529"}`,
+                  border: `5px solid ${theme === "light" ? "#f0ebe3" : "#212529"}`,
                 }}
               >
                 <img

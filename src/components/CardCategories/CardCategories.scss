@@ -6,7 +6,7 @@
   transition: 0.5s ease-in-out;
 
   &--light {
-    .card-categories__label { background: #fff; }
+    .card-categories__label { background: #f0ebe3; }
     &:hover { box-shadow: rgba(17,12,46,0.15) 0px 48px 100px 0px; }
   }
   &--dark {
