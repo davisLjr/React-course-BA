@@ -1,34 +1,32 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Text } from '../Text/Text';
-import type { CardCategoriesProps } from './types';
-import './CardCategories.scss';
+import ProductCard from '../ProductCard/ProductCard';
+import { type CardCategoriesProps } from './types';
+import type { Product as FirestoreProduct } from '../../hooks/useProducts';
+import { useProducts } from '../../hooks/useProducts';
 
 const CardCategories: React.FC<CardCategoriesProps> = ({
   category,
   imageSrc,
   to,
-  theme,
-  className = ''
 }) => {
+  const { products } = useProducts(category);
+  const thumb = imageSrc ?? products[0]?.images[0] ?? '/categories/default.webp';
+
+  const simulatedProduct: FirestoreProduct = {
+    id: `category-${category}`,
+    title: category,
+    description: `Explora productos en ${category}`,
+    price: 0,
+    category,
+    images: [thumb],
+  };
+
   return (
-    <Link to={to} className={`card-categories card-categories--${theme} ${className}`}>
-      <div className="card-categories__content">
-        <img
-          className="card-categories__image"
-          src={imageSrc}
-          alt={`categoria ${category}`}
-          width={340}
-          height={350}
-          loading="lazy"
-        />
-        <div className="card-categories__label">
-          <Text as="p" theme={theme} className="card-categories__text">
-            {category}
-          </Text>
-        </div>
-      </div>
-    </Link>
+    <ProductCard
+      product={simulatedProduct}
+      showAddToCart={false}
+      overrideRedirect={to}
+    />
   );
 };
 

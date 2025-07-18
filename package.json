@@ -10,6 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@google-cloud/firestore": "^7.11.3",
+    "dotenv": "^17.2.0",
+    "firebase": "^11.10.0",
+    "firebase-admin": "^13.4.0",
     "framer-motion": "^12.12.1",
     "lucide-react": "^0.511.0",
     "react": "^19.1.0",

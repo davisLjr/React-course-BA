@@ -1,113 +1,155 @@
-import React from "react";
-import {Link, useSearchParams} from "react-router-dom";
-import {toast} from "sonner";
-import {useProducts} from "../../hooks/useProducts";
-import {useProductsByCategory} from "../../hooks/useProductsByCategory";
-import {useCategories} from "../../hooks/useCategories";
-import {useCart} from "../../context/CartContext";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useProducts } from "../../hooks/useProducts";
+import { useCategories } from "../../hooks/useCategories";
+import { useTheme } from "../../context/ThemeContext";
 import ProductCard from "../ProductCard/ProductCard";
+import SearchInput from "../Inputs/SearchInput";
 import "./productList.scss";
-import Button from "../Button/Button";
-import {useTheme} from "../../context/ThemeContext";
-import {ChevronDown} from "lucide-react";
-import type {Product} from "../../services/productsService";
-import {Text} from "../Text/Text";
+import { ChevronDown } from "lucide-react";
 import ProductSkeleton from "./skeleton/ProductSkeleton";
+import LoginModal from "../Modal/LoginModal";
+import { motion, AnimatePresence } from "framer-motion";
+
+const ITEMS_PER_PAGE = 8;
 
 export const ProductList: React.FC = () => {
-  const {theme} = useTheme();
-  const {addToCart} = useCart();
+  const { theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
+  const filter = searchParams.get("category") ?? undefined;
 
-  const filter = searchParams.get("category") ?? "";
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showLogin, setShowLogin] = useState(false);
+  const [page, setPage] = useState(1);
 
-  const {categories} = useCategories();
-  const allHook = useProducts();
-  const catHook = useProductsByCategory(filter);
-  const {
-    products,
-    loading: prodLoading,
-    error: prodError,
-  } = filter ? catHook : allHook;
+  const { categories, loading: catLoading } = useCategories();
+  const { products: allProducts, loading: prodLoading, error: prodError } = useProducts(filter);
 
-  const handleAdd = (p: Product) => {
-    try {
-      addToCart(p);
-      toast.success(
-        <>
-          <Text className="toast__title">Producto añadido al carrito.</Text>
-          <Text className="toast__subtitle">
-            Puedes verlos en la sección Carrito
-          </Text>
-        </>
-      );
-    } catch {
-      toast.error("No se pudo añadir al carrito");
-    }
-  };
+  useEffect(() => {
+    if (searchTerm && filter) setSearchParams({});
+  }, [searchTerm, filter, setSearchParams]);
+
+  useEffect(() => {
+    setSearchTerm("");
+  }, [filter]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [searchTerm, filter]);
+
+  const filtered = allProducts.filter((p) =>
+    p.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const pageItems = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
 
   return (
     <>
-      <div className={`product-list__filter product-list__filter--${theme}`}>
-        <label className="product-list__filter__label">
-          Categoría:{" "}
-          <div className="product-list__filter__select-wrapper">
-            <select
-              className="product-list__filter__select"
-              value={filter}
-              onChange={(e) => {
-                const cat = e.target.value;
-                if (cat) setSearchParams({category: cat});
-                else setSearchParams({});
-              }}
-            >
-              <option value="">Todas</option>
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
-            <ChevronDown size={16} className="product-list__filter__icon" />
+      <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
+
+      <div className={`product-list__controls product-list__controls--${theme}`}>
+        <SearchInput
+          placeholder="Buscar productos..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+
+        {catLoading ? (
+          <p>Cargando categorías…</p>
+        ) : (
+          <div className="product-list__filter">
+            <label htmlFor="category-select">
+              Categoría:
+              <div className="product-list__filter__select-wrapper">
+                <select
+                  id="category-select"
+                  name="category"
+                  className="product-list__filter__select"
+                  value={searchTerm ? "" : filter ?? ""}
+                  onChange={(e) => {
+                    const sel = e.target.value;
+                    if (sel) {
+                      setSearchParams({ category: sel });
+                    } else {
+                      setSearchParams({});
+                    }
+                  }}
+                  disabled={!!searchTerm}
+                >
+                  <option value="">Todas</option>
+                  {categories.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown size={16} className="product-list__filter__icon" />
+              </div>
+            </label>
           </div>
-        </label>
+        )}
       </div>
 
-      {prodError && <p>Error productos: {prodError}</p>}
+      {prodError && <p className="error">Error productos: {prodError}</p>}
 
-      <div className="product-list">
-        {prodLoading
-          ? Array.from({length: 8}).map((_, i) => (
-              <div key={i} className="product-list__item product-list__item">
-                <ProductSkeleton />
-              </div>
-            ))
-          : products.map((p) => (
-              <div
-                key={p.id}
-                className={`product-list__item product-list__item--${theme}`}
-              >
-                <Link
-                  to={`/products/${p.id}`}
-                  className="product-list__link"
-                  aria-label={`Ver detalles de ${p.title}`}
+      {prodLoading ? (
+        <div className="product-list">
+          {Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => (
+            <div key={i} className="product-list__item">
+              <ProductSkeleton />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <>
+          <motion.div
+            className="product-list"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+            }}
+          >
+            <AnimatePresence>
+              {pageItems.map((p) => (
+                <motion.div
+                  key={p.id}
+                  className={`product-list__item product-list__item--${theme}`}
+                  variants={{ hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
+                  exit={{ y: -20, opacity: 0 }}
                 >
-                  <ProductCard product={p} />
-                </Link>
-                <Button
-                  onClick={() => handleAdd(p)}
-                  color="secondary"
-                  size="large"
-                  outline
-                  theme={theme}
-                  fullWidth
-                  className="button-custom"
+                  <ProductCard product={p} onLoginRequest={() => setShowLogin(true)} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+
+          {totalPages > 1 && (
+            <div className="product-list__pagination" role="navigation" aria-label="Paginación de productos">
+              <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+                Anterior
+              </button>
+              {[...Array(totalPages)].map((_, i) => (
+                <button
+                  key={i}
+                  className={page === i + 1 ? "active" : ""}
+                  onClick={() => setPage(i + 1)}
+                  aria-current={page === i + 1 ? "page" : undefined}
                 >
-                  Añadir al carrito
-                </Button>
-              </div>
-            ))}
-      </div>
+                  {i + 1}
+                </button>
+              ))}
+              <button disabled={page === totalPages} onClick={() => setPage(page + 1)}>
+                Siguiente
+              </button>
+            </div>
+          )}
+        </>
+      )}
     </>
   );
 };
+
+export default ProductList;

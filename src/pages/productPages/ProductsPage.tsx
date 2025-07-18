@@ -1,5 +1,5 @@
 import React from "react";
-import {ProductList} from "../../components/ProductList/ProductList";
+import ProductList from "../../components/ProductList/ProductList";
 import {Banner} from "../../components/Banner/Banner";
 import {Text} from "../../components/Text/Text";
 import {useTheme} from "../../context/ThemeContext";

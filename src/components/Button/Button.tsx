@@ -1,4 +1,3 @@
-// src/components/Button/Button.tsx
 import React, { forwardRef } from 'react';
 import { Link, type LinkProps } from 'react-router-dom';
 import type { ButtonPropTypes } from './types';

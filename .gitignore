@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 .unlighthouse
+.env
+script/
+products.json
+
 
 # Editor directories and files
 .vscode/*

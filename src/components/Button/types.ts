@@ -20,4 +20,5 @@ export type ButtonPropTypes = {
   color?: 'primary' | 'secondary' | 'base';
   hasBadge?: boolean;
   badgeCount?: number;
+  disabled?: boolean
 };

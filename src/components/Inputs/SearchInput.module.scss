@@ -1,0 +1,66 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.icon {
+  position: absolute;
+  left: 0.75rem;
+  color: currentColor;
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  padding: 0.8rem 2.5rem 0.8rem 2.75rem;
+  font-size: 1.2rem;
+  font-weight: 300;
+  border: none;
+  border-bottom: 2px solid #000;
+  background: transparent;
+
+  &::-webkit-search-decoration,
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-results-button,
+  &::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+  }
+
+  &:focus {
+    outline-offset: 0px;
+    outline-color: #000;
+    border-color: transparent;
+  }
+}
+
+.inputError {
+  border-color: #e74c3c;
+}
+
+.clearBtn {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:focus {
+    outline: 2px solid currentColor;
+    border-radius: 50%;
+  }
+}
+
+.errorMessage {
+  position: absolute;
+  bottom: -1.25rem;
+  left: 2.75rem;
+  color: #e74c3c;
+  font-size: 0.875rem;
+}

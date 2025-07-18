@@ -8,6 +8,8 @@
   border: none;
   border-radius: 0;
   gap: 0.313rem;
+  transition: all 0.2s ease-in-out;
+  position: relative;
 
   &__badge {
     position: absolute;
@@ -20,17 +22,17 @@
     height: 1.1rem;
     font-size: 0.55rem;
     border-radius: 9999px;
-    background-color: #e53e3e; /* color por defecto (rojo) */
+    background-color: #e53e3e;
     color: #f0ebe3;
     border: 1px solid;
   }
 
-  /* Si quieres que el badge también cambie con el theme: */
   &.btn--light .btn__badge {
     background-color: #000000;
     color: #f0ebe3;
     border-color: #f0ebe3;
   }
+
   &.btn--dark .btn__badge {
     background-color: #f0ebe3;
     color: #000000;
@@ -41,66 +43,194 @@
     &.btn--light {
       background-color: #f0ebe3;
       color: #000000;
+
+      &:hover,
+      &:focus {
+        background-color: #000000;
+        color: #f0ebe3;
+      }
+
+      &:active {
+        background-color: #333333;
+        color: #ffffff;
+      }
+
       &.btn--outline {
-        border-color: #000000;
-        border: 1px solid;
-        color: #000000;
         background-color: transparent;
+        border: 1px solid #000000;
+        color: #000000;
+
+        &:hover,
+        &:focus {
+          background-color: #000000;
+          color: #f0ebe3;
+        }
+
+        &:active {
+          background-color: #333333;
+        }
       }
     }
+
     &.btn--dark {
       background-color: #000000;
       color: #f0ebe3;
+
+      &:hover,
+      &:focus {
+        background-color: #f0ebe3;
+        color: #000000;
+      }
+
+      &:active {
+        background-color: #dddddd;
+        color: #000000;
+      }
+
       &.btn--outline {
-        border-color: #f0ebe3;
-        border: 1px solid;
-        color: #f0ebe3;
         background-color: transparent;
+        border: 1px solid #f0ebe3;
+        color: #f0ebe3;
+
+        &:hover,
+        &:focus {
+          background-color: #f0ebe3;
+          color: #000000;
+        }
+
+        &:active {
+          background-color: #cccccc;
+          color: #000000;
+        }
       }
     }
   }
 
   &.btn--secondary {
-
     &.btn--light {
       background-color: #000000;
       color: #f0ebe3;
+
+      &:hover,
+      &:focus {
+        background-color: #333333;
+        color: #ffffff;
+      }
+
+      &:active {
+        background-color: #111111;
+        color: #ffffff;
+      }
+
       &.btn--outline {
-        border-color: #000000;
-        color: #000000;
         background-color: transparent;
-        border: 1px solid;
+        border: 1px solid #000000;
+        color: #000000;
+
+        &:hover,
+        &:focus {
+          background-color: #000000;
+          color: #f0ebe3;
+        }
+
+        &:active {
+          background-color: #222222;
+        }
       }
     }
+
     &.btn--dark {
       background-color: #f0ebe3;
       color: #000000;
+
+      &:hover,
+      &:focus {
+        background-color: #d8d1c3;
+        color: #000000;
+      }
+
+      &:active {
+        background-color: #c4bcab;
+        color: #000000;
+      }
+
       &.btn--outline {
-        border-color: #f0ebe3;
         background-color: transparent;
+        border: 1px solid #f0ebe3;
         color: #f0ebe3;
-        border: 1px solid;
+
+        &:hover,
+        &:focus {
+          background-color: #f0ebe3;
+          color: #000000;
+        }
+
+        &:active {
+          background-color: #e0d8c5;
+          color: #000000;
+        }
       }
     }
   }
 
   &.btn--base {
-
-
     &.btn--light {
       background-color: transparent;
       color: #000000;
+
+      &:hover,
+      &:focus {
+        background-color: #e0e0e0;
+        color: #000000;
+      }
+
+      &:active {
+        background-color: #cfcfcf;
+        color: #000000;
+      }
+
       &.btn--outline {
-        border-color: #000000;
-        border: 1px solid;
+        border: 1px solid #000000;
+
+        &:hover,
+        &:focus {
+          background-color: #000000;
+          color: #f0ebe3;
+        }
+
+        &:active {
+          background-color: #222222;
+        }
       }
     }
+
     &.btn--dark {
       background-color: transparent;
       color: #f0ebe3;
+
+      &:hover,
+      &:focus {
+        background-color: #3a3a3a;
+        color: #f0ebe3;
+      }
+
+      &:active {
+        background-color: #555555;
+        color: #ffffff;
+      }
+
       &.btn--outline {
-        border-color: #f0ebe3;
-        border: 1px solid;
+        border: 1px solid #f0ebe3;
+
+        &:hover,
+        &:focus {
+          background-color: #f0ebe3;
+          color: #000000;
+        }
+
+        &:active {
+          background-color: #dddddd;
+        }
       }
     }
   }
@@ -115,15 +245,16 @@
   }
 }
 
-/* sizes */
 .btn--small {
   padding: 0.25rem 0.31rem;
   font-size: 0.813rem;
 }
+
 .btn--medium {
   padding: 0.37rem 0.5rem;
   font-size: 0.875rem;
 }
+
 .btn--large {
   padding: 0.43rem 1.313rem;
   font-size: 0.938rem;

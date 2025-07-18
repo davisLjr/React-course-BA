@@ -1,26 +1,16 @@
-import React, {useRef} from "react";
-import {useCategories} from "../../hooks/useCategories";
-import {useTheme} from "../../context/ThemeContext";
-import {Text} from "../../components/Text/Text";
-import {Banner} from "../../components/Banner/Banner";
-import CardCategories from "../../components/CardCategories/CardCategories";
-import "./categoriesPage.scss";
-import CardCategoriesSkeleton from "../../components/CardCategories/skeleton/CardCategoriesSkeleton";
-import categoriesImg from "/sections/tinified/categories.webp";
-
-const categoryImages: Record<string, string> = {
-  electronics:
-    "/categories/elect.webp",
-  jewelery: "/categories/jewel.webp",
-  "men's clothing":
-    "/categories/men.webp",
-  "women's clothing":
-    "/categories/women.webp",
-};
+import React, { useRef } from 'react';
+import { useCategories } from '../../hooks/useCategories';
+import { useTheme } from '../../context/ThemeContext';
+import { Text } from '../../components/Text/Text';
+import { Banner } from '../../components/Banner/Banner';
+import CardCategories from '../../components/CardCategories/CardCategories';
+import './categoriesPage.scss';
+import CardCategoriesSkeleton from '../../components/CardCategories/skeleton/CardCategoriesSkeleton';
+import categoriesImg from '/sections/tinified/categories.webp';
 
 const CategoriesPage: React.FC = () => {
-  const {categories, loading, error} = useCategories();
-  const {theme} = useTheme();
+  const { categories, loading: catLoading } = useCategories();
+  const { theme } = useTheme();
   const carouselRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -28,50 +18,42 @@ const CategoriesPage: React.FC = () => {
       <Banner
         title="Categorías"
         imgSrc={categoriesImg}
-        imgAlt="imagen referente a seccion productos"
+        imgAlt="Sección de categorías"
       />
 
-      <div style={{maxWidth: "1920px", margin: "auto"}}>
+      <div style={{ maxWidth: '1920px', margin: 'auto' }}>
         <div className="text-container">
           <Text
             style={{
-              fontSize: "1.45rem",
+              fontSize: '1.45rem',
               fontWeight: 300,
-              maxWidth: "1100px",
+              maxWidth: '1100px',
               fontFamily: '"Libre Franklin", sans-serif',
             }}
             theme={theme}
           >
-            Lorem Ipsum is simply dummy text Lorem Ipsum is simply dummy text,
-            Lorem Ipsum is simply dummy text Lorem Ipsum is simply dummy text
+            Explora nuestras categorías: encuentra productos de calidad en cada sección.
           </Text>
         </div>
 
         <div className={`categories-page categories-page--${theme}`}>
           <h2 className="categories-page__title">Categorías</h2>
-          <div className="categories-page__wrapper">
-            {error && <p className="categories-page__error">Error: {error}</p>}
-            <div
-              ref={carouselRef}
-              className="categories-page__carousel hide-scrollbar"
-            >
-              {loading
-                ? Array.from({length: 4}).map((_, i) => (
-                    <CardCategoriesSkeleton key={i} />
-                  ))
-                : categories.map((cat) => (
-                    <CardCategories
-                      key={cat}
-                      category={cat}
-                      imageSrc={
-                        categoryImages[cat] || categoryImages["electronics"]
-                      }
-                      to={`/products?category=${encodeURIComponent(cat)}`}
-                      theme={theme}
-                      
-                    />
-                  ))}
-            </div>
+
+          <div
+            ref={carouselRef}
+            className="categories-page__carousel hide-scrollbar"
+          >
+            {catLoading
+              ? Array.from({ length: 5 }).map((_, i) => (
+                  <CardCategoriesSkeleton key={i} />
+                ))
+              : categories.map((cat) => (
+                  <CardCategories
+                    key={cat}
+                    category={cat}
+                    to={`/products?category=${encodeURIComponent(cat)}`}
+                  />
+                ))}
           </div>
         </div>
       </div>
