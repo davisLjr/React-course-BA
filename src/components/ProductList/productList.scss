@@ -110,6 +110,7 @@
 
   button:hover:not(:disabled) {
     background-color: #eee;
+    color: #333;
   }
 
   button.active {
@@ -137,6 +138,7 @@
 
     button:hover:not(:disabled) {
       background-color: #444;
+      color: #fff;
     }
 
     button.active {
