@@ -66,8 +66,41 @@ const AdminPage: React.FC = () => {
 
   const categories = Array.from(new Set(products.map(p => p.category))).sort();
 
+  const listFiltered = products
+    .filter(p => !filterCat || p.category === filterCat)
+    .filter(p => {
+      const term = searchTerm.toLowerCase();
+      return (
+        p.title.toLowerCase().includes(term) ||
+        p.category.toLowerCase().includes(term)
+      );
+    });
+
+  const totalPages = Math.ceil(listFiltered.length / ITEMS_PER_PAGE);
+  const pageItems = listFiltered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+
+  useEffect(() => {
+    setPage(1);
+  }, [searchTerm, filterCat]);
+
+  const getPaginationRange = (
+    current: number,
+    total: number,
+    delta = 2
+  ): (number | string)[] => {
+    const range: (number | string)[] = [];
+    const left = Math.max(2, current - delta);
+    const right = Math.min(total - 1, current + delta);
+    range.push(1);
+    if (left > 2) range.push('...');
+    for (let i = left; i <= right; i++) range.push(i);
+    if (right < total - 1) range.push('...');
+    if (total > 1) range.push(total);
+    return range;
+  };
+
   const parsePrice = (val: string): number | null => {
-    if (!/^\d+(?:,\d{1,2})?$/.test(val)) return null;
+    if (!/^[0-9]+(?:,[0-9]{1,2})?$/.test(val)) return null;
     return parseFloat(val.replace(',', '.'));
   };
 
@@ -100,7 +133,7 @@ const AdminPage: React.FC = () => {
       price: p.price.toFixed(2).replace('.', ','),
       description: p.description,
       category: p.category,
-      images: p.images.join(', ')
+      images: p.images.join(', '),
     });
     setEditingId(p.id);
     setIsModalOpen(true);
@@ -115,7 +148,7 @@ const AdminPage: React.FC = () => {
       price: parsePrice(form.price)!,
       description: form.description,
       category: form.category,
-      images: form.images.split(',').map(s => s.trim())
+      images: form.images.split(',').map(s => s.trim()),
     };
     try {
       if (editingId) {
@@ -150,17 +183,6 @@ const AdminPage: React.FC = () => {
     }
   };
 
-  const listFiltered = products
-    .filter(p => !filterCat || p.category === filterCat)
-    .filter(p => p.title.toLowerCase().includes(searchTerm.toLowerCase()));
-
-  const totalPages = Math.ceil(listFiltered.length / ITEMS_PER_PAGE);
-  const pageItems = listFiltered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
-
-  useEffect(() => {
-    setPage(1);
-  }, [searchTerm, filterCat]);
-
   if (authLoading) return <output>Cargando sesión…</output>;
   if (!user || !isAdmin) return <Navigate to="/" replace />;
 
@@ -172,7 +194,7 @@ const AdminPage: React.FC = () => {
 
       <section className={styles.controls}>
         <SearchInput
-          placeholder="Buscar productos por nombre…"
+          placeholder="Buscar productos por nombre o categoría…"
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
         />
@@ -216,8 +238,8 @@ const AdminPage: React.FC = () => {
               >
                 <ProductCard product={p} disableNavigation />
                 <div className={styles.cardActions}>
-                  <Button onClick={() => openEdit(p)} aria-label={`Editar producto ${p.title}`}>Editar</Button>
-                  <Button onClick={() => setDeleteTargetId(p.id)} aria-label={`Eliminar producto ${p.title}`}>Eliminar</Button>
+                  <Button onClick={() => openEdit(p)}>Editar</Button>
+                  <Button onClick={() => setDeleteTargetId(p.id)}>Eliminar</Button>
                 </div>
               </motion.div>
             ))}
@@ -228,16 +250,20 @@ const AdminPage: React.FC = () => {
       {totalPages > 1 && (
         <nav className={styles.pagination} aria-label="Paginación de productos">
           <Button disabled={page === 1} onClick={() => setPage(page - 1)}>Anterior</Button>
-          {[...Array(totalPages)].map((_, i) => (
-            <button
-              key={i}
-              className={page === i + 1 ? styles.activePage : ''}
-              onClick={() => setPage(i + 1)}
-              aria-current={page === i + 1 ? 'page' : undefined}
-            >
-              {i + 1}
-            </button>
-          ))}
+          {getPaginationRange(page, totalPages).map((item, i) =>
+            typeof item === 'string' ? (
+              <span key={`dots-${i}`} className={styles.paginationDots}>{item}</span>
+            ) : (
+              <button
+                key={item}
+                onClick={() => setPage(item)}
+                className={page === item ? styles.activePage : ''}
+                aria-current={page === item ? 'page' : undefined}
+              >
+                {item}
+              </button>
+            )
+          )}
           <Button disabled={page === totalPages} onClick={() => setPage(page + 1)}>Siguiente</Button>
         </nav>
       )}

@@ -21,9 +21,27 @@ export const ProductList: React.FC = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [page, setPage] = useState(1);
   const [loadedPages, setLoadedPages] = useState<Set<number>>(new Set());
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   const { categories, loading: catLoading } = useCategories();
   const { products: allProducts, loading: prodLoading, error: prodError } = useProducts(filter);
+
+  const filtered = useMemo(() => {
+    const term = searchTerm.toLowerCase();
+    return allProducts.filter(
+      (p) =>
+        p.title.toLowerCase().includes(term) ||
+        p.category.toLowerCase().includes(term)
+    );
+  }, [allProducts, searchTerm]);
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+
+  const currentPageProducts = useMemo(() => {
+    return filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+  }, [filtered, page]);
+
+  const shouldShowSkeleton = !loadedPages.has(page) && !prodLoading;
 
   useEffect(() => {
     setSearchTerm("");
@@ -40,28 +58,22 @@ export const ProductList: React.FC = () => {
     });
   }, [page]);
 
-  const filtered = useMemo(() => {
-    return allProducts.filter((p) =>
-      p.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [allProducts, searchTerm]);
+  useEffect(() => {
+    if (!prodLoading && !loadedPages.has(page)) {
+      setLoadedPages((prev) => {
+        const next = new Set(prev);
+        next.add(page);
+        return next;
+      });
+    }
+  }, [prodLoading, page, loadedPages]);
 
-  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
-
-  const currentPageProducts = useMemo(() => {
-    return filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
-  }, [filtered, page]);
-
-  const shouldShowSkeleton = !loadedPages.has(page) && !prodLoading;
-
-  // Precarga imágenes de la siguiente página
   useEffect(() => {
     const nextPage = page + 1;
     const nextProducts = filtered.slice(
       (nextPage - 1) * ITEMS_PER_PAGE,
       nextPage * ITEMS_PER_PAGE
     );
-
     nextProducts.forEach((p) => {
       const url = p.images?.[0];
       if (url) {
@@ -70,6 +82,45 @@ export const ProductList: React.FC = () => {
       }
     });
   }, [page, filtered]);
+
+  useEffect(() => {
+    const checkScreen = () => {
+      setIsSmallScreen(window.innerWidth < 360);
+    };
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
+
+  useEffect(() => {
+    if (searchTerm) {
+      setSearchParams({});
+    }
+  }, [searchTerm]);
+
+  const getPaginationRange = (
+    current: number,
+    total: number,
+    delta = 2
+  ): (number | string)[] => {
+    const range: (number | string)[] = [];
+    const left = Math.max(2, current - delta);
+    const right = Math.min(total - 1, current + delta);
+
+    range.push(1);
+
+    if (left > 2) range.push("...");
+
+    for (let i = left; i <= right; i++) {
+      range.push(i);
+    }
+
+    if (right < total - 1) range.push("...");
+
+    if (total > 1) range.push(total);
+
+    return range;
+  };
 
   return (
     <>
@@ -143,16 +194,28 @@ export const ProductList: React.FC = () => {
               <button disabled={page === 1} onClick={() => setPage(page - 1)}>
                 Anterior
               </button>
-              {[...Array(totalPages)].map((_, i) => (
-                <button
-                  key={i}
-                  className={page === i + 1 ? "active" : ""}
-                  onClick={() => setPage(i + 1)}
-                  aria-current={page === i + 1 ? "page" : undefined}
-                >
-                  {i + 1}
-                </button>
-              ))}
+
+              {isSmallScreen ? (
+                <button className="active">{page}</button>
+              ) : (
+                getPaginationRange(page, totalPages).map((item, i) =>
+                  typeof item === "string" ? (
+                    <span key={`dots-${i}`} className="pagination__dots">
+                      {item}
+                    </span>
+                  ) : (
+                    <button
+                      key={item}
+                      className={page === item ? "active" : ""}
+                      onClick={() => setPage(item)}
+                      aria-current={page === item ? "page" : undefined}
+                    >
+                      {item}
+                    </button>
+                  )
+                )
+              )}
+
               <button disabled={page === totalPages} onClick={() => setPage(page + 1)}>
                 Siguiente
               </button>

@@ -82,9 +82,11 @@
 
 .pagination {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 0.5rem;
   margin-top: 2rem;
+  padding: 0 1rem;
 
   button {
     background: none;
@@ -94,6 +96,7 @@
     border-radius: 4px;
     font-weight: 500;
     transition: background-color 0.2s;
+    font-size: 0.9rem;
 
     &:hover:not(:disabled) {
       background-color: #eee;
@@ -112,6 +115,16 @@
   }
 }
 
+.paginationDots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.75rem;
+  color: #666;
+  font-size: 0.9rem;
+  user-select: none;
+}
+
 .modalTitle {
   margin-top: 0;
   font-size: 1.5rem;
@@ -128,6 +141,18 @@
 @media (min-width: 600px) {
   .formGrid {
     grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .pagination {
+    gap: 0.25rem;
+
+    button,
+    .paginationDots {
+      padding: 0.4rem 0.6rem;
+      font-size: 0.8rem;
+    }
   }
 }
 

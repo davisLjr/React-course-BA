@@ -87,42 +87,86 @@
 
 .product-list__pagination {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 0.5rem;
   margin-top: 2rem;
+  padding: 0 1rem;
 
-  button {
+  button,
+  .pagination__dots {
+    flex: 0 0 auto;
     background: none;
     border: 1px solid #aaa;
     padding: 0.5rem 1rem;
-    cursor: pointer;
     border-radius: 4px;
     font-weight: 500;
+    cursor: pointer;
+    font-size: 0.9rem;
+    text-align: center;
+    white-space: nowrap;
     transition: background-color 0.2s;
+  }
 
-    &:hover:not(:disabled) {
-      background-color: #eee;
+  button:hover:not(:disabled) {
+    background-color: #eee;
+  }
+
+  button.active {
+    background-color: #333;
+    color: #fff;
+    border-color: #333;
+  }
+
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .pagination__dots {
+    cursor: default;
+    border: none;
+  }
+
+  html.dark & {
+    button,
+    .pagination__dots {
+      border-color: #666;
+      color: #eee;
     }
 
-    &.active {
-      background-color: #333;
-      color: #fff;
-      border-color: #333;
-
-      &:hover{
-        background-color: #333;
-        color: #fff;
-        border-color: #333;
-      }
+    button:hover:not(:disabled) {
+      background-color: #444;
     }
 
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
+    button.active {
+      background-color: #fff;
+      color: #212529;
+      border-color: #fff;
+    }
+  }
+
+  @media (max-width: 768px) {
+    gap: 0.25rem;
+
+    button,
+    .pagination__dots {
+      padding: 0.4rem 0.6rem;
+      font-size: 0.8rem;
+    }
+  }
+
+  @media (max-width: 400px) {
+    justify-content: center;
+    gap: 0.2rem;
+
+    button,
+    .pagination__dots {
+      padding: 0.3rem 0.5rem;
+      font-size: 0.75rem;
     }
   }
 }
-
 
 @media (max-width: 1017px) {
   .product-list__item {
