@@ -113,3 +113,26 @@
     color: #212529;
   }
 }
+
+.futuristic-card__image {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background: linear-gradient(90deg, #ddd 25%, #eee 50%, #ddd 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.futuristic-card__image.loaded {
+  opacity: 1;
+  animation: none;
+  background: none;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

@@ -6,7 +6,6 @@ import { Banner } from '../../components/Banner/Banner';
 import CardCategories from '../../components/CardCategories/CardCategories';
 import './categoriesPage.scss';
 import CardCategoriesSkeleton from '../../components/CardCategories/skeleton/CardCategoriesSkeleton';
-import categoriesImg from '/sections/tinified/categories.webp';
 
 const CategoriesPage: React.FC = () => {
   const { categories, loading: catLoading } = useCategories();
@@ -17,7 +16,7 @@ const CategoriesPage: React.FC = () => {
     <>
       <Banner
         title="Categorías"
-        imgSrc={categoriesImg}
+        imgSrc='https://res.cloudinary.com/djqiqpilh/image/upload/v1752947977/categories_ubydoa.jpg'
         imgAlt="Sección de categorías"
       />
 

@@ -1,32 +1,42 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   collection,
-  onSnapshot,
+  getDocs,
   type DocumentData
-} from 'firebase/firestore';
-import { db } from '../../firebase';
+} from "firebase/firestore";
+import { db } from "../../firebase";
 
 export function useCategories() {
   const [categories, setCategories] = useState<string[]>([]);
-  const [loading, setLoading]       = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    const unsub = onSnapshot(
-      collection(db, 'products'),
-      snap => {
+    let active = true;
+
+    const fetch = async () => {
+      setLoading(true);
+      try {
+        const snap = await getDocs(collection(db, "products"));
+        if (!active) return;
+
         const cats = Array.from(
-          new Set(snap.docs.map(d => (d.data() as DocumentData).category as string))
+          new Set(snap.docs.map((d) => (d.data() as DocumentData).category as string))
         );
         setCategories(cats);
         setLoading(false);
-      },
-      err => {
+      } catch (err: unknown) {
+        if (!active) return;
+
         console.error(err);
         setLoading(false);
       }
-    );
-    return () => unsub();
+    };
+
+    fetch();
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   return { categories, loading };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useProducts } from "../../hooks/useProducts";
 import { useCategories } from "../../hooks/useCategories";
@@ -9,7 +9,6 @@ import "./productList.scss";
 import { ChevronDown } from "lucide-react";
 import ProductSkeleton from "./skeleton/ProductSkeleton";
 import LoginModal from "../Modal/LoginModal";
-import { motion, AnimatePresence } from "framer-motion";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -21,28 +20,56 @@ export const ProductList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showLogin, setShowLogin] = useState(false);
   const [page, setPage] = useState(1);
+  const [loadedPages, setLoadedPages] = useState<Set<number>>(new Set());
 
   const { categories, loading: catLoading } = useCategories();
   const { products: allProducts, loading: prodLoading, error: prodError } = useProducts(filter);
 
   useEffect(() => {
-    if (searchTerm && filter) setSearchParams({});
-  }, [searchTerm, filter, setSearchParams]);
-
-  useEffect(() => {
     setSearchTerm("");
+    setPage(1);
+    setLoadedPages(new Set());
   }, [filter]);
 
   useEffect(() => {
-    setPage(1);
-  }, [searchTerm, filter]);
+    setLoadedPages((prev) => {
+      if (prev.has(page)) return prev;
+      const next = new Set(prev);
+      next.add(page);
+      return next;
+    });
+  }, [page]);
 
-  const filtered = allProducts.filter((p) =>
-    p.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filtered = useMemo(() => {
+    return allProducts.filter((p) =>
+      p.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [allProducts, searchTerm]);
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
-  const pageItems = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+
+  const currentPageProducts = useMemo(() => {
+    return filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+  }, [filtered, page]);
+
+  const shouldShowSkeleton = !loadedPages.has(page) && !prodLoading;
+
+  // Precarga imágenes de la siguiente página
+  useEffect(() => {
+    const nextPage = page + 1;
+    const nextProducts = filtered.slice(
+      (nextPage - 1) * ITEMS_PER_PAGE,
+      nextPage * ITEMS_PER_PAGE
+    );
+
+    nextProducts.forEach((p) => {
+      const url = p.images?.[0];
+      if (url) {
+        const img = new Image();
+        img.src = url;
+      }
+    });
+  }, [page, filtered]);
 
   return (
     <>
@@ -69,11 +96,7 @@ export const ProductList: React.FC = () => {
                   value={searchTerm ? "" : filter ?? ""}
                   onChange={(e) => {
                     const sel = e.target.value;
-                    if (sel) {
-                      setSearchParams({ category: sel });
-                    } else {
-                      setSearchParams({});
-                    }
+                    setSearchParams(sel ? { category: sel } : {});
                   }}
                   disabled={!!searchTerm}
                 >
@@ -93,7 +116,7 @@ export const ProductList: React.FC = () => {
 
       {prodError && <p className="error">Error productos: {prodError}</p>}
 
-      {prodLoading ? (
+      {prodLoading || shouldShowSkeleton ? (
         <div className="product-list">
           {Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => (
             <div key={i} className="product-list__item">
@@ -103,31 +126,20 @@ export const ProductList: React.FC = () => {
         </div>
       ) : (
         <>
-          <motion.div
-            className="product-list"
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-            }}
-          >
-            <AnimatePresence>
-              {pageItems.map((p) => (
-                <motion.div
-                  key={p.id}
-                  className={`product-list__item product-list__item--${theme}`}
-                  variants={{ hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
-                  exit={{ y: -20, opacity: 0 }}
-                >
-                  <ProductCard product={p} onLoginRequest={() => setShowLogin(true)} />
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </motion.div>
+          <div className="product-list">
+            {currentPageProducts.map((p) => (
+              <div key={p.id} className={`product-list__item product-list__item--${theme}`}>
+                <ProductCard product={p} onLoginRequest={() => setShowLogin(true)} />
+              </div>
+            ))}
+          </div>
 
           {totalPages > 1 && (
-            <div className="product-list__pagination" role="navigation" aria-label="Paginación de productos">
+            <div
+              className="product-list__pagination"
+              role="navigation"
+              aria-label="Paginación de productos"
+            >
               <button disabled={page === 1} onClick={() => setPage(page - 1)}>
                 Anterior
               </button>

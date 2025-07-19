@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from "react";
 import {
   collection,
+  getDocs,
   query,
   where,
-  onSnapshot,
   type DocumentData,
-  type QuerySnapshot
-} from 'firebase/firestore';
-import { db } from '../../firebase';
+  type QueryDocumentSnapshot
+} from "firebase/firestore";
+import { db } from "../../firebase";
 
 export interface Product {
   id: string;
@@ -20,34 +20,51 @@ export interface Product {
 
 export function useProducts(category?: string) {
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading]   = useState(true);
-  const [error, setError]       = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let active = true;
+
     setLoading(true);
     setError(null);
 
-    const colRef = collection(db, 'products');
-    const q = category ? query(colRef, where('category', '==', category)) : query(colRef);
+    const fetchData = async () => {
+      try {
+        const colRef = collection(db, "products");
+        const q = category
+          ? query(colRef, where("category", "==", category))
+          : query(colRef);
 
-    const unsub = onSnapshot(
-      q,
-      (snap: QuerySnapshot<DocumentData>) => {
-        const lista = snap.docs.map(doc => {
-          const data = doc.data() as Omit<Product, 'id'>;
+        const snapshot = await getDocs(q);
+        if (!active) return;
+
+        const lista = snapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => {
+          const data = doc.data() as Omit<Product, "id">;
           return { id: doc.id, ...data };
         });
+
         setProducts(lista);
         setLoading(false);
-      },
-      err => {
-        console.error(err);
-        setError(err.message);
+      } catch (err: unknown) {
+        if (!active) return;
+
+        if (err instanceof Error) {
+          console.error(err);
+          setError(err.message);
+        } else {
+          console.error("Unknown error", err);
+          setError("Error desconocido al obtener productos");
+        }
         setLoading(false);
       }
-    );
+    };
 
-    return () => unsub();
+    fetchData();
+
+    return () => {
+      active = false;
+    };
   }, [category]);
 
   return { products, loading, error };

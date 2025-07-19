@@ -4,7 +4,6 @@ import {Banner} from "../../components/Banner/Banner";
 import {Text} from "../../components/Text/Text";
 import {useTheme} from "../../context/ThemeContext";
 import "./productPage.scss";
-import productImg from "/sections/tinified/product.webp";
 
 const ProductsPage: React.FC = () => {
   const {theme} = useTheme();
@@ -12,7 +11,7 @@ const ProductsPage: React.FC = () => {
     <div style={{ marginBottom: '4rem' }}>
       <Banner
         title="Productos"
-        imgSrc={productImg}
+        imgSrc='https://res.cloudinary.com/djqiqpilh/image/upload/v1752947981/producto_onwzka.jpg'
         imgAlt="imagen referente a seccion productos"
       />
 

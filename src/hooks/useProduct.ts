@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   doc,
-  onSnapshot,
+  getDoc,
   type DocumentData,
   type DocumentSnapshot
-} from 'firebase/firestore';
-import { db } from '../../firebase';
+} from "firebase/firestore";
+import { db } from "../../firebase";
 
 export interface ProductDetail {
   id: string;
@@ -19,37 +19,51 @@ export interface ProductDetail {
 export function useProduct(id?: string) {
   const [product, setProduct] = useState<ProductDetail | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!id) {
-      setError('ID inválido');
-      setLoading(false);
-      return;
-    }
-    setLoading(true);
+    let active = true;
 
-    const ref = doc(db, 'products', id);
-    const unsub = onSnapshot(
-      ref,
-      (snap: DocumentSnapshot<DocumentData>) => {
+    const fetch = async () => {
+      if (!id) {
+        setError("ID inválido");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const snap: DocumentSnapshot<DocumentData> = await getDoc(doc(db, "products", id));
+
+        if (!active) return;
+
         if (!snap.exists()) {
-          setError('No encontrado');
+          setError("No encontrado");
           setLoading(false);
           return;
         }
-        const data = snap.data() as Omit<ProductDetail, 'id'>;
+
+        const data = snap.data() as Omit<ProductDetail, "id">;
         setProduct({ id: snap.id, ...data });
         setLoading(false);
-      },
-      err => {
-        console.error(err);
-        setError(err.message);
+      } catch (err: unknown) {
+        if (!active) return;
+
+        if (err instanceof Error) {
+          console.error(err);
+          setError(err.message);
+        } else {
+          console.error("Unknown error", err);
+          setError("Error desconocido");
+        }
         setLoading(false);
       }
-    );
+    };
 
-    return () => unsub();
+    fetch();
+
+    return () => {
+      active = false;
+    };
   }, [id]);
 
   return { product, loading, error };

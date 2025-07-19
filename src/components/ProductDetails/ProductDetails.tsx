@@ -40,12 +40,12 @@ export const ProductDetail: React.FC = () => {
     try {
       addToCart(pService);
       toast.success(
-        <>
+        <div aria-live="polite">
           <Text className="toast__title">Producto añadido al carrito.</Text>
           <Text className="toast__subtitle">
             Puedes verlo en la sección Carrito
           </Text>
-        </>
+        </div>
       );
     } catch {
       toast.error('No se pudo añadir al carrito');
@@ -54,7 +54,7 @@ export const ProductDetail: React.FC = () => {
 
   if (loading) return <ProductDetailSkeleton />;
   if (error || !product) {
-    return <p className="product-detail__error">Error: {error ?? 'No encontrado'}</p>;
+    return <p className="product-detail__error" role="alert">Error: {error ?? 'No encontrado'}</p>;
   }
 
   const images = product.images;
@@ -69,35 +69,45 @@ export const ProductDetail: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
+        aria-label={`Detalles del producto ${product.title}`}
+        role="region"
       >
         <div className="product-detail__container">
           <div className="product-detail__gallery">
             <AnimatePresence mode="wait">
-              <motion.img
-                key={current}
-                src={current}
-                alt={product.title}
-                className="product-detail__main-image"
-                loading="lazy"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3 }}
-              />
+              <div className="product-detail__main-image-container">
+                <motion.img
+                  key={current}
+                  src={current}
+                  alt={`Imagen principal del producto ${product.title}`}
+                  className="product-detail__main-image"
+                  loading="lazy"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
+                />
+              </div>
             </AnimatePresence>
 
             <div className="product-detail__thumbs">
               {images.map((src, idx) => (
-                <motion.img
+                <button
                   key={idx}
-                  src={src}
-                  alt={`${product.title} (${idx + 1})`}
-                  className={`product-detail__thumb ${src === current ? 'active' : ''}`}
+                  type="button"
                   onClick={() => setMainImage(src)}
-                  loading="lazy"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.2 }}
-                />
+                  aria-label={`Ver imagen ${idx + 1} de ${product.title}`}
+                  className="product-detail__thumb-button"
+                >
+                  <motion.img
+                    src={src}
+                    alt={`Miniatura ${idx + 1} de ${product.title}`}
+                    className={`product-detail__thumb ${src === current ? 'active' : ''}`}
+                    loading="lazy"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                </button>
               ))}
             </div>
           </div>
@@ -122,6 +132,7 @@ export const ProductDetail: React.FC = () => {
               outline={theme === 'light'}
               theme={theme}
               className="product-detail__button"
+              aria-label={user ? 'Añadir producto al carrito' : 'Inicia sesión para añadir al carrito'}
             >
               {user ? 'Añadir al carrito' : 'Inicia sesión para añadir'}
             </Button>

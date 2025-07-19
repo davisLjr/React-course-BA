@@ -1,5 +1,4 @@
-// src/components/ProductCard/ProductCard.tsx
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
@@ -18,7 +17,7 @@ export interface ProductCardProps {
   overrideRedirect?: string;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({
+const ProductCardComponent: React.FC<ProductCardProps> = ({
   product,
   onLoginRequest,
   disableNavigation = false,
@@ -29,8 +28,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const { addToCart } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [loaded, setLoaded] = useState(false);
 
-  const thumbnail = product.images?.[0] ?? "/fallback.png";
+  const thumbnail = useMemo(
+    () => product.images?.[0] ?? "/fallback.png",
+    [product.images]
+  );
 
   const handleAdd = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -73,10 +76,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <img
         src={thumbnail}
         alt={product.title}
-        className="futuristic-card__image"
+        className={`futuristic-card__image ${loaded ? "loaded" : "loading"}`}
         loading="lazy"
+        decoding="async"
+        fetchPriority="low"
         width={300}
         height={200}
+        onLoad={() => setLoaded(true)}
       />
       <div className="futuristic-card__category-top">
         <Text as="p" className="futuristic-card__category" themeInverted>
@@ -109,4 +115,4 @@ const ProductCard: React.FC<ProductCardProps> = ({
   );
 };
 
-export default ProductCard;
+export default React.memo(ProductCardComponent);
