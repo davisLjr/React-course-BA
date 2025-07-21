@@ -6,11 +6,24 @@ import { Banner } from '../../components/Banner/Banner';
 import CardCategories from '../../components/CardCategories/CardCategories';
 import './categoriesPage.scss';
 import CardCategoriesSkeleton from '../../components/CardCategories/skeleton/CardCategoriesSkeleton';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const CategoriesPage: React.FC = () => {
   const { categories, loading: catLoading } = useCategories();
   const { theme } = useTheme();
   const carouselRef = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+    }
+  };
 
   return (
     <>
@@ -37,6 +50,15 @@ const CategoriesPage: React.FC = () => {
 
         <div className={`categories-page categories-page--${theme}`}>
           <h2 className="categories-page__title">Categorías</h2>
+
+          <div className="categories-page__controls">
+            <button onClick={scrollLeft} className="categories-page__btn">
+              <ChevronLeft size={20} />
+            </button>
+            <button onClick={scrollRight} className="categories-page__btn">
+              <ChevronRight size={20} />
+            </button>
+          </div>
 
           <div
             ref={carouselRef}
