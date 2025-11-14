@@ -6,15 +6,9 @@ import {
   type DocumentSnapshot
 } from "firebase/firestore";
 import { db } from "../../firebase";
+import type { Product as ProductDetail } from "../types/product";
 
-export interface ProductDetail {
-  id: string;
-  title: string;
-  description: string;
-  price: number;
-  category: string;
-  images: string[];
-}
+export type { ProductDetail };
 
 export function useProduct(id?: string) {
   const [product, setProduct] = useState<ProductDetail | null>(null);

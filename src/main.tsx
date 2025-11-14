@@ -13,7 +13,7 @@ import ProductsPage from "./pages/productPages/ProductsPage";
 import ProductDetailPage from "./pages/productDetail/ProductsDetailPage";
 import CategoriesPage from "./pages/categories/CategoriesPage";
 import LocationsPage from "./pages/location/Locations";
-import ComercialPage from "./pages/comercial/Comercial";
+import ContactanosPage from "./pages/contactanos/Contactanos";
 import CartPage from "./pages/cart/CartPage";
 
 import {Toaster} from "sonner";
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
           </RequireAuth>
         ),
       },
-      {path: "commercial", element: <ComercialPage />},
+      {path: "contactanos", element: <ContactanosPage />},
       {path: "categories", element: <CategoriesPage />},
       {path: "products", element: <ProductsPage />},
       {path: "products/:id", element: <ProductDetailPage />},

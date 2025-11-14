@@ -8,15 +8,9 @@ import {
   type QueryDocumentSnapshot
 } from "firebase/firestore";
 import { db } from "../../firebase";
+import type { Product } from "../types/product";
 
-export interface Product {
-  id: string;
-  title: string;
-  description: string;
-  price: number;
-  category: string;
-  images: string[];
-}
+export type { Product };
 
 export function useProducts(category?: string) {
   const [products, setProducts] = useState<Product[]>([]);

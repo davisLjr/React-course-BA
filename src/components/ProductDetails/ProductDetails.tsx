@@ -10,8 +10,9 @@ import './productDetail.scss';
 import { Text } from '../Text/Text';
 import ProductDetailSkeleton from './skeleton/ProductDetailSkeleton';
 import LoginModal from '../Modal/LoginModal';
-import type { Product as ServiceProduct } from '../../services/productsService';
+import type { LegacyProduct as ServiceProduct } from '../../types/product';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,31 +20,44 @@ export const ProductDetail: React.FC = () => {
   const { addToCart } = useCart();
   const { theme } = useTheme();
   const { user } = useAuth();
-  const [mainImage, setMainImage] = useState<string>();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showLogin, setShowLogin] = useState(false);
+  const [selectedSizeIndex, setSelectedSizeIndex] = useState(1); // Default to M (index 1)
+  const [customSize, setCustomSize] = useState('');
+  const [quantity, setQuantity] = useState(1);
+
+  const selectedSize = product?.sizes[selectedSizeIndex];
+  const selectedPrice = selectedSize?.price || 0;
 
   const handleAdd = () => {
-    if (!product) return;
+    if (!product || !selectedSize) return;
     if (!user) {
       setShowLogin(true);
       return;
     }
+    
+    const finalSize = selectedSize.name === 'Personalizado' ? customSize : selectedSize.name;
+    if (selectedSize.name === 'Personalizado' && !customSize.trim()) {
+      toast.error('Por favor especifica el tamaño personalizado');
+      return;
+    }
+    
     const pService: ServiceProduct = {
       id: Number(product.id),
       title: product.title,
       description: product.description,
-      price: product.price,
+      price: selectedSize.price,
       category: product.category,
       image: product.images[0] ?? '',
       rating: { rate: 0, count: 0 }
     };
     try {
-      addToCart(pService);
+      addToCart(pService, finalSize, quantity);
       toast.success(
         <div aria-live="polite">
           <Text className="toast__title">Producto añadido al carrito.</Text>
           <Text className="toast__subtitle">
-            Puedes verlo en la sección Carrito
+            Talla {finalSize} - Cantidad: {quantity}
           </Text>
         </div>
       );
@@ -58,7 +72,21 @@ export const ProductDetail: React.FC = () => {
   }
 
   const images = product.images;
-  const current = mainImage || images[0];
+  const currentImage = images[currentImageIndex] || images[0];
+  const visibleThumbnails = images.slice(1, 4);
+  const extraImagesCount = Math.max(0, images.length - 4);
+
+  const handlePreviousImage = () => {
+    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+
+  const handleThumbnailClick = (index: number) => {
+    setCurrentImageIndex(index);
+  };
 
   return (
     <>
@@ -74,11 +102,11 @@ export const ProductDetail: React.FC = () => {
       >
         <div className="product-detail__container">
           <div className="product-detail__gallery">
-            <AnimatePresence mode="wait">
-              <div className="product-detail__main-image-container">
+            <div className="product-detail__main-image-container">
+              <AnimatePresence mode="wait">
                 <motion.img
-                  key={current}
-                  src={current}
+                  key={currentImageIndex}
+                  src={currentImage}
                   alt={`Imagen principal del producto ${product.title}`}
                   className="product-detail__main-image"
                   loading="lazy"
@@ -87,28 +115,75 @@ export const ProductDetail: React.FC = () => {
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.3 }}
                 />
-              </div>
-            </AnimatePresence>
+              </AnimatePresence>
+              
+              {images.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={handlePreviousImage}
+                    className="product-detail__nav-btn product-detail__nav-btn--prev"
+                    aria-label="Imagen anterior"
+                  >
+                    <ChevronLeft size={20} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleNextImage}
+                    className="product-detail__nav-btn product-detail__nav-btn--next"
+                    aria-label="Imagen siguiente"
+                  >
+                    <ChevronRight size={20} />
+                  </button>
+                </>
+              )}
+            </div>
 
             <div className="product-detail__thumbs">
-              {images.map((src, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => setMainImage(src)}
-                  aria-label={`Ver imagen ${idx + 1} de ${product.title}`}
-                  className="product-detail__thumb-button"
-                >
-                  <motion.img
-                    src={src}
-                    alt={`Miniatura ${idx + 1} de ${product.title}`}
-                    className={`product-detail__thumb ${src === current ? 'active' : ''}`}
-                    loading="lazy"
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.2 }}
-                  />
-                </button>
-              ))}
+              <button
+                type="button"
+                onClick={() => handleThumbnailClick(0)}
+                aria-label={`Ver imagen principal de ${product.title}`}
+                className="product-detail__thumb-button"
+              >
+                <motion.img
+                  src={images[0]}
+                  alt={`Miniatura principal de ${product.title}`}
+                  className={`product-detail__thumb ${currentImageIndex === 0 ? 'active' : ''}`}
+                  loading="lazy"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.2 }}
+                />
+              </button>
+              
+              {visibleThumbnails.map((src, idx) => {
+                const actualIndex = idx + 1;
+                const isLast = idx === visibleThumbnails.length - 1 && extraImagesCount > 0;
+                
+                return (
+                  <button
+                    key={actualIndex}
+                    type="button"
+                    onClick={() => handleThumbnailClick(actualIndex)}
+                    aria-label={`Ver imagen ${actualIndex + 1} de ${product.title}`}
+                    className="product-detail__thumb-button"
+                  >
+                    <motion.img
+                      src={src}
+                      alt={`Miniatura ${actualIndex + 1} de ${product.title}`}
+                      className={`product-detail__thumb ${currentImageIndex === actualIndex ? 'active' : ''}`}
+                      loading="lazy"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.2 }}
+                    />
+                    {isLast && (
+                      <div className="product-detail__thumb-overlay">
+                        +{extraImagesCount}
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -124,7 +199,58 @@ export const ProductDetail: React.FC = () => {
               {new Intl.NumberFormat('es-AR', {
                 style: 'currency',
                 currency: 'ARS'
-              }).format(product.price)}
+              }).format(selectedPrice)}
+            </div>
+            
+            <div className="product-detail__options">
+              <div className="product-detail__size-section">
+                <span className="product-detail__label">Talla:</span>
+                <div className="product-detail__sizes">
+                  {product.sizes.map((size, index) => (
+                    <button
+                      key={size.name}
+                      type="button"
+                      className={`product-detail__size-btn ${
+                        selectedSizeIndex === index ? 'active' : ''
+                      }`}
+                      onClick={() => setSelectedSizeIndex(index)}
+                      title={`${size.name} - $${size.price.toLocaleString('es-AR')}`}
+                    >
+                      {size.name}
+                    </button>
+                  ))}
+                </div>
+                {selectedSize?.name === 'Personalizado' && (
+                  <input
+                    type="text"
+                    className="product-detail__custom-input"
+                    placeholder="Especifica el tamaño personalizado"
+                    value={customSize}
+                    onChange={(e) => setCustomSize(e.target.value)}
+                  />
+                )}
+              </div>
+              
+              <div className="product-detail__quantity-section">
+                <span className="product-detail__label">Cantidad:</span>
+                <div className="product-detail__quantity">
+                  <button
+                    type="button"
+                    className="product-detail__qty-btn"
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  >
+                    -
+                  </button>
+                  <span className="product-detail__qty-display">{quantity}</span>
+                  <button
+                    type="button"
+                    className="product-detail__qty-btn"
+                    onClick={() => setQuantity(quantity + 1)}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
             </div>
             <Button
               onClick={handleAdd}
@@ -134,7 +260,7 @@ export const ProductDetail: React.FC = () => {
               className="product-detail__button"
               aria-label={user ? 'Añadir producto al carrito' : 'Inicia sesión para añadir al carrito'}
             >
-              {user ? 'Añadir al carrito' : 'Inicia sesión para añadir'}
+              {user ? `Añadir ${quantity} al carrito` : 'Inicia sesión para añadir'}
             </Button>
           </motion.div>
         </div>

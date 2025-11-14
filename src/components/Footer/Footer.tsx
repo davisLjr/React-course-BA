@@ -2,7 +2,7 @@ import React from "react";
 import {useTheme} from "../../context/ThemeContext";
 import {Text} from "../Text/Text";
 import Button from "../Button/Button";
-import {AlignVerticalJustifyEnd, Moon, SunMoon} from "lucide-react";
+import { Moon, SunMoon} from "lucide-react";
 import useMedia from "use-media";
 
 const Footer: React.FC = () => {
@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
     width: "100%",
     padding: `40px ${horizontalPadding}`,
     borderTop: `1px solid ${theme === "light" ? "#bababa" : "#7b7b7b"}`,
-    backgroundColor: theme === "light" ? "#f0ebe3" : "#212529",
+    backgroundColor: theme === "light" ? "#f7ebec" : "#212529",
     display: "flex",
     flexDirection: "column",
     gap: "30px",
@@ -51,25 +51,23 @@ const Footer: React.FC = () => {
           <Button
             isLink
             to="/"
-            icon={<AlignVerticalJustifyEnd size={20} />}
             theme={theme}
-            iconPosition="left"
             color="base"
             style={{padding: "0", marginRight: "1rem"}}
           >
-            ECX
+            Magia en papel
           </Button>
           <Button isLink to="/products" color="base" theme={theme}>
-            Products
+            Productos
           </Button>
           <Button isLink to="/categories" color="base" theme={theme}>
-            Categories
+            Categorias
           </Button>
           <Button isLink to="/locations" color="base" theme={theme}>
-            Locations
+            Ubicación
           </Button>
-          <Button isLink to="/commercial" color="base" theme={theme}>
-            Commercial
+          <Button isLink to="/contactanos" color="base" theme={theme}>
+            Contactanos
           </Button>
         </div>
       </div>

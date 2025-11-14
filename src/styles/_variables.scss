@@ -1,0 +1,130 @@
+// Typography
+$font-primary: 'Nunito', sans-serif;
+$font-secondary: "Libre Franklin", sans-serif;
+
+// Pastel Salmon Theme Palette
+:root {
+  // Fonts
+  --font-primary: #{$font-primary};
+  --font-secondary: #{$font-secondary};
+  
+  // Primary Colors (Pastel Salmon Theme)
+  --color-primary-50: #fff5f5;     // Lightest salmon
+  --color-primary-100: #fed7d7;    // Very light salmon
+  --color-primary-200: #feb2b2;    // Light salmon
+  --color-primary-300: #fc8181;    // Medium salmon
+  --color-primary-400: #f56565;    // Main salmon
+  --color-primary-500: #e53e3e;    // Deeper salmon
+  --color-primary-600: #c53030;    // Dark salmon
+  --color-primary-700: #9b2c2c;    // Darker salmon
+  --color-primary-800: #742a2a;    // Very dark salmon
+  --color-primary-900: #4a1919;    // Darkest salmon
+  
+  // Complementary Pastels
+  --color-peach-50: #fff9f5;       // Very light peach
+  --color-peach-100: #ffe8d4;     // Light peach
+  --color-peach-200: #ffd4b3;     // Medium peach
+  --color-peach-300: #ffb088;     // Warm peach
+  
+  --color-cream-50: #fffef7;       // Very light cream
+  --color-cream-100: #fefcf3;     // Light cream
+  --color-cream-200: #fdf8e6;     // Medium cream
+  --color-cream-300: #fbf2d9;     // Warm cream
+  
+  --color-blush-50: #fef7f7;       // Very light blush
+  --color-blush-100: #fde8e8;     // Light blush
+  --color-blush-200: #fbd5d5;     // Medium blush
+  --color-blush-300: #f8b4b4;     // Warm blush
+  
+  // Neutral Colors
+  --color-gray-50: #f9fafb;        // Almost white
+  --color-gray-100: #f3f4f6;      // Very light gray
+  --color-gray-200: #e5e7eb;      // Light gray
+  --color-gray-300: #d1d5db;      // Medium light gray
+  --color-gray-400: #9ca3af;      // Medium gray
+  --color-gray-500: #6b7280;      // Dark gray
+  --color-gray-600: #4b5563;      // Darker gray
+  --color-gray-700: #374151;      // Very dark gray
+  --color-gray-800: #1f2937;      // Almost black
+  --color-gray-900: #111827;      // Black
+  
+  // Semantic Colors
+  --color-success: #10b981;       // Success green
+  --color-warning: #f59e0b;       // Warning amber
+  --color-error: #ef4444;         // Error red
+  --color-info: #3b82f6;          // Info blue
+  
+  // WhatsApp (preserve original)
+  --color-whatsapp: #25d366;      // Official WhatsApp green
+  --color-whatsapp-dark: #128c7e; // Darker WhatsApp green
+  
+  // Background Colors
+  --bg-body-light: var(--color-primary-50);
+  --bg-surface-light: rgba(255, 255, 255, 0.8);
+  --bg-surface-elevated-light: rgba(255, 255, 255, 0.9);
+  --bg-overlay-light: rgba(255, 255, 255, 0.6);
+  
+  --bg-body-dark: #1a1a1a;
+  --bg-surface-dark: rgba(255, 255, 255, 0.1);
+  --bg-surface-elevated-dark: rgba(255, 255, 255, 0.15);
+  --bg-overlay-dark: rgba(0, 0, 0, 0.6);
+  
+  // Text Colors
+  --text-primary-light: var(--color-gray-800);
+  --text-secondary-light: var(--color-gray-600);
+  --text-muted-light: var(--color-gray-500);
+  
+  --text-primary-dark: var(--color-gray-100);
+  --text-secondary-dark: var(--color-gray-300);
+  --text-muted-dark: var(--color-gray-400);
+  
+  // Border Colors
+  --border-light: var(--color-primary-200);
+  --border-subtle-light: var(--color-primary-100);
+  --border-strong-light: var(--color-primary-300);
+  
+  --border-dark: rgba(255, 255, 255, 0.2);
+  --border-subtle-dark: rgba(255, 255, 255, 0.1);
+  --border-strong-dark: rgba(255, 255, 255, 0.3);
+  
+  // Button Colors (Pastel Theme)
+  --btn-primary-bg: linear-gradient(135deg, var(--color-primary-300), var(--color-primary-400));
+  --btn-primary-hover: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+  --btn-primary-text: white;
+  
+  --btn-secondary-bg: linear-gradient(135deg, var(--color-peach-200), var(--color-peach-300));
+  --btn-secondary-hover: linear-gradient(135deg, var(--color-peach-300), var(--color-primary-300));
+  --btn-secondary-text: var(--color-gray-700);
+  
+  --btn-outline-border: var(--color-primary-300);
+  --btn-outline-text: var(--color-primary-600);
+  --btn-outline-hover-bg: var(--color-primary-50);
+  
+  // Shadow Colors
+  --shadow-sm: 0 1px 2px 0 rgba(245, 101, 101, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(245, 101, 101, 0.1), 0 2px 4px -1px rgba(245, 101, 101, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(245, 101, 101, 0.1), 0 4px 6px -2px rgba(245, 101, 101, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(245, 101, 101, 0.1), 0 10px 10px -5px rgba(245, 101, 101, 0.04);
+  
+  // Transitions
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.3s ease-in-out;
+  --transition-slow: 0.5s ease-in-out;
+  
+  // Border Radius
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+  
+  // Spacing
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+}

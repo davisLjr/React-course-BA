@@ -34,7 +34,7 @@ export const Hero: React.FC<HeroProps> = ({
   ].filter(Boolean).join(' ');
 
   return (
-    <section className="hero" style={{ minHeight: '100dvh', ...style }}>
+    <section className="hero" style={style}>
       <video
         ref={videoRef}
         className="hero__video"

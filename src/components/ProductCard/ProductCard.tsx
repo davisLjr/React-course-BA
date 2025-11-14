@@ -43,15 +43,16 @@ const ProductCardComponent: React.FC<ProductCardProps> = ({
       return;
     }
     try {
+      const defaultSize = product.sizes?.[0] || { name: 'S', price: 0 };
       addToCart({
         id: typeof product.id === "string" ? parseInt(product.id, 10) : product.id,
         title: product.title,
         description: product.description,
-        price: product.price,
+        price: defaultSize.price,
         category: product.category,
         image: thumbnail,
         rating: { rate: 0, count: 0 },
-      });
+      }, defaultSize.name, 1);
       toast.success("Producto añadido al carrito");
     } catch {
       toast.error("No se pudo añadir al carrito");

@@ -128,9 +128,10 @@ const AdminPage: React.FC = () => {
   };
 
   const openEdit = (p: FirestoreProduct) => {
+    const defaultPrice = p.sizes?.[0]?.price || 0;
     setForm({
       title: p.title,
-      price: p.price.toFixed(2).replace('.', ','),
+      price: defaultPrice.toFixed(2).replace('.', ','),
       description: p.description,
       category: p.category,
       images: p.images.join(', '),
@@ -145,10 +146,17 @@ const AdminPage: React.FC = () => {
     setLoading(true);
     const payload = {
       title: form.title,
-      price: parsePrice(form.price)!,
       description: form.description,
       category: form.category,
       images: form.images.split(',').map(s => s.trim()),
+      sizes: [
+        { name: 'S', price: parsePrice(form.price)! * 0.8 },
+        { name: 'M', price: parsePrice(form.price)! },
+        { name: 'L', price: parsePrice(form.price)! * 1.2 },
+        { name: 'XL', price: parsePrice(form.price)! * 1.4 },
+        { name: 'XXL', price: parsePrice(form.price)! * 1.6 },
+        { name: 'Personalizado', price: parsePrice(form.price)! * 2 }
+      ]
     };
     try {
       if (editingId) {

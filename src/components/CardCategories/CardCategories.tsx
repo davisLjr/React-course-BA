@@ -16,9 +16,9 @@ const CardCategories: React.FC<CardCategoriesProps> = ({
     id: `category-${category}`,
     title: category,
     description: `Explora productos en ${category}`,
-    price: 0,
     category,
     images: [thumb],
+    sizes: [{ name: 'S', price: 0 }],
   };
 
   return (
